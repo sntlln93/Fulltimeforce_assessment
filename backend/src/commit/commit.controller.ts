@@ -3,10 +3,10 @@ import { CommitService } from './commit.service';
 
 @Controller('commits')
 export class CommitController {
-    constructor(private readonly appService: CommitService) { }
+    constructor(private readonly commitService: CommitService) { }
 
     @Get()
     index() {
-        return this.appService.getCommits();
+        return this.commitService.getCommits();
     }
 }
