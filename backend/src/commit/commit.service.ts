@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { catchError, firstValueFrom } from 'rxjs';
 import { CommitResponse } from './types/api';
@@ -21,7 +21,13 @@ export class CommitService {
         const { data } = await firstValueFrom(
             this.httpService.get<any[]>(uri).pipe(
                 catchError((error: AxiosError) => {
-                    throw error;
+                    if (Number(error.code) === 403) {
+                        throw new ForbiddenException('Limit exceeded!',
+                            { cause: error, description: 'Unauthenticated accounts are limited to 60 request per hour' }
+                        );
+                    }
+
+                    throw new Error("Something went wrong");
                 }),
             ),
         );
