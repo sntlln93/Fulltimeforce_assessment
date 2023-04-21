@@ -1,6 +1,7 @@
-import { CommitResponse } from "../types/api";
+import { Commit as CommitApi } from "../constants/api";
+import { Commit } from "../types/commit";
 
-export function getCommits(): Promise<CommitResponse[]> {
-    return fetch('https://api.github.com/repos/sntlln93/fulltimeforce_assessment/commits')
+export function getCommits(): Promise<Commit[]> {
+    return fetch(CommitApi.GET)
         .then(response => response.json());
 }
